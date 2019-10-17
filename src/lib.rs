@@ -1,7 +1,8 @@
-mod filter;
-mod halide;
+pub mod runtime;
 
-use halide::*;
+mod filter;
+
+use runtime::*;
 
 pub use filter::{Filter, Manager};
 
@@ -90,6 +91,30 @@ fn halide_buffer(
     std::mem::forget(dim);
 
     buf
+}
+
+impl<'a> From<&'a halide_buffer_t> for Buffer {
+    fn from(buf: &'a halide_buffer_t) -> Buffer {
+        let mut dest = buf.clone();
+        let mut dim = Vec::new();
+
+        for i in 0..dest.dimensions as usize {
+            unsafe {
+                dim.push(*dest.dim.add(i));
+            }
+        }
+
+        dest.dim = dim.as_mut_ptr();
+        std::mem::forget(dim);
+
+        Buffer(buf.clone())
+    }
+}
+
+impl Clone for Buffer {
+    fn clone(&self) -> Self {
+        Buffer::from(&self.0)
+    }
 }
 
 impl Buffer {

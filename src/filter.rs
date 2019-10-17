@@ -15,11 +15,26 @@ impl<'a, T> Filter<'a, T> {
     }
 }
 
+const SELF_KEY: &str = "____self";
+
 impl Manager {
     pub fn new() -> Manager {
         Manager {
             libraries: RefCell::new(HashMap::new()),
         }
+    }
+
+    pub fn load_self(&self) -> bool {
+        if (*self.libraries.borrow()).contains_key(SELF_KEY) {
+            return true;
+        }
+
+        if let Ok(lib) = Library::open_self() {
+            self.libraries.borrow_mut().insert(SELF_KEY.into(), lib);
+            return true;
+        }
+
+        false
     }
 
     pub fn load(&self, name: &str) -> bool {

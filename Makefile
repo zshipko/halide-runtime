@@ -7,7 +7,7 @@ bindings:
 		--whitelist-type 'halide.*_t' \
 		--whitelist-function 'halide.*' \
 		--no-doc-comments \
-		$(HALIDE_PATH)/src/runtime/HalideRuntime.h > src/halide.rs
+		$(HALIDE_PATH)/src/runtime/HalideRuntime.h > src/runtime.rs
 
 test:
 	halide-build run brighter.cpp
