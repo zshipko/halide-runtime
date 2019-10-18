@@ -1,5 +1,3 @@
 # halide-runtime
 
-A Rust library for executing [Halide](https://github.com/halide/halide) filters.
-
-
+Rust bindings to the [halide](https://github.com/halide/halide) runtime
