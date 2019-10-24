@@ -13,7 +13,7 @@ bindings:
 	HalideRuntime.h > src/runtime.rs
 
 test:
-	halide-build run brighter.cpp
+	halide-build run -g brighter.cpp -- -g brighter -o . -e o target=host
 	$(CC) -shared -o libbrighter.so brighter.o
 	cargo test
 

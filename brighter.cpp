@@ -1,45 +1,19 @@
-#include "Halide.h"
-
+#define IMAGED_HALIDE_UTIL
+#include <imaged.h>
 #include <stdio.h>
-using namespace Halide;
 
-int main(int argc, char **argv) {
+class Brighter : public Generator<Brighter> {
+public:
+  Input<Buffer<uint8_t>> input{"input", 3};
+  Output<Buffer<uint8_t>> brighter{"brighter", 3};
 
-  // We'll define a simple one-stage pipeline:
-  Func brighter;
   Var x, y, c;
 
-  // The pipeline will depend on one scalar parameter.
-  Param<uint8_t> offset;
+  void generate() {
+    brighter(x, y, c) = input(x, y, c) + 10;
+    interleave_input(input, 3, x, y, c);
+    interleave_output(brighter, 3, x, y, c);
+  }
+};
 
-  // And take one grayscale 8-bit input buffer. The first
-  // constructor argument gives the type of a pixel, and the second
-  // specifies the number of dimensions (not the number of
-  // channels!). For a grayscale image this is two; for a color
-  // image it's three. Currently, four dimensions is the maximum for
-  // inputs and outputs.
-  ImageParam input(type_of<uint8_t>(), 3);
-
-  // If we were jit-compiling, these would just be an int and a
-  // Buffer, but because we want to compile the pipeline once and
-  // have it work for any value of the parameter, we need to make a
-  // Param object, which can be used like an Expr, and an ImageParam
-  // object, which can be used like a Buffer.
-
-  // Define the Func.
-  brighter(x, y, c) = input(x, y, c) + offset;
-
-  // Schedule it.
-  brighter.parallel(y);
-
-  // This time, instead of calling brighter.realize(...), which
-  // would compile and run the pipeline immediately, we'll call a
-  // method that compiles the pipeline to a static library and header.
-  //
-  // For AOT-compiled code, we need to explicitly declare the
-  // arguments to the routine. This routine takes two. Arguments are
-  // usually Params or ImageParams.
-  brighter.compile_to_file("brighter", {input, offset}, "brighter");
-
-  return 0;
-}
+HALIDE_REGISTER_GENERATOR(Brighter, brighter);

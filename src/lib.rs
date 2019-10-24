@@ -52,14 +52,6 @@ fn halide_buffer(
     };
 
     let mut dim = Vec::new();
-    if channels > 1 {
-        dim.push(halide_dimension_t {
-            flags: 0,
-            min: 0,
-            extent: channels,
-            stride: 1,
-        });
-    }
 
     dim.push(halide_dimension_t {
         flags: 0,
@@ -74,6 +66,15 @@ fn halide_buffer(
         extent: height,
         stride: channels * width,
     });
+
+    if channels > 1 {
+        dim.push(halide_dimension_t {
+            flags: 0,
+            min: 0,
+            extent: channels,
+            stride: 1,
+        });
+    }
 
     dim.shrink_to_fit();
 
@@ -158,10 +159,10 @@ mod tests {
         let brighter_path = "./libbrighter.so";
         let mgr = Manager::new();
         assert!(mgr.load(brighter_path));
-        let brighter: unsafe extern "C" fn(*const Buffer, u8, *mut Buffer) -> i32 =
+        let brighter: unsafe extern "C" fn(*const Buffer, *mut Buffer) -> i32 =
             mgr.filter(brighter_path, "brighter").unwrap().get();
 
-        let mut inplace = Buffer::new(
+        let mut out = Buffer::new(
             width as i32,
             height as i32,
             channels as i32,
@@ -170,7 +171,7 @@ mod tests {
         );
 
         unsafe {
-            assert!(brighter(&buf, 10, &mut inplace) == 0);
+            assert!(brighter(&buf, &mut out) == 0);
         }
 
         for i in data {
