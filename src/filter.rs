@@ -57,7 +57,7 @@ impl Manager {
     }
 
     pub fn reload(&self, name: &str) -> bool {
-        self.libraries.borrow_mut().remove(name);
+        self.remove(name);
         self.load(name)
     }
 
