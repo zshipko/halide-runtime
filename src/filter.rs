@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 
-use dlopen::symbor::Library;
+use dlopen::raw::Library;
 
 pub struct Manager {
     libraries: RefCell<HashMap<String, Library>>,
@@ -51,7 +51,9 @@ impl Manager {
     }
 
     pub fn remove(&self, name: &str) {
-        self.libraries.borrow_mut().remove(name);
+        if let Some(x) = self.libraries.borrow_mut().remove(name) {
+            drop(x);
+        }
     }
 
     pub fn reload(&self, name: &str) -> bool {
@@ -62,7 +64,7 @@ impl Manager {
     pub fn filter<'a, T: Copy>(&'a self, lib: &str, name: &str) -> Option<Filter<'a, T>> {
         if let Some(lib) = self.libraries.borrow().get(lib) {
             match unsafe { lib.symbol::<T>(name) } {
-                Ok(x) => return Some(Filter(*x, self)),
+                Ok(x) => return Some(Filter(x, self)),
                 Err(_) => return None,
             }
         }
