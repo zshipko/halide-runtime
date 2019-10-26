@@ -1,5 +1,7 @@
 HALIDE_PATH?=~/halide
 
+HEADER?=HalideRuntime.h
+
 build: bindings
 	cargo build
 
@@ -10,7 +12,7 @@ bindings:
 		--whitelist-type 'halide.*_t' \
 		--whitelist-function 'halide.*' \
 		--no-doc-comments \
-	HalideRuntime.h > src/runtime.rs
+	$(HEADER) > src/runtime.rs
 
 test:
 	halide-build run -g brighter.cpp -- -g brighter -o . -e o target=host

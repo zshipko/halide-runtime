@@ -123,6 +123,11 @@ impl Buffer {
         assert!(!data.is_null());
         Buffer(halide_buffer(width, height, channels, t, data))
     }
+
+    pub fn set_device(&mut self, device: u64, handle: Device) {
+        self.0.device = device;
+        self.0.device_interface = handle.0;
+    }
 }
 
 impl Drop for Buffer {
@@ -177,5 +182,35 @@ mod tests {
         for i in data {
             assert!(i == 10);
         }
+    }
+}
+
+extern "C" {
+    fn halide_opencl_device_interface() -> *const halide_device_interface_t;
+
+    fn halide_opengl_device_interface() -> *const halide_device_interface_t;
+
+    fn halide_cuda_device_interface() -> *const halide_device_interface_t;
+}
+
+pub struct Device(*const halide_device_interface_t);
+
+impl Device {
+    pub fn opencl() -> Device {
+        unsafe { Device(halide_opencl_device_interface()) }
+    }
+
+    pub fn opengl() -> Device {
+        unsafe { Device(halide_opengl_device_interface()) }
+    }
+
+    pub fn cuda() -> Device {
+        unsafe { Device(halide_cuda_device_interface()) }
+    }
+}
+
+pub fn set_gpu_device(i: i32) {
+    unsafe {
+        halide_set_gpu_device(i);
     }
 }
