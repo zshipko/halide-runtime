@@ -54,6 +54,11 @@ impl Manager {
         self.libraries.borrow_mut().remove(name);
     }
 
+    pub fn reload(&self, name: &str) -> bool {
+        self.libraries.borrow_mut().remove(name);
+        self.load(name)
+    }
+
     pub fn filter<'a, T: Copy>(&'a self, lib: &str, name: &str) -> Option<Filter<'a, T>> {
         if let Some(lib) = self.libraries.borrow().get(lib) {
             match unsafe { lib.symbol::<T>(name) } {
