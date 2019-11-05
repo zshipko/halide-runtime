@@ -4,7 +4,7 @@ pub mod filter;
 
 use runtime::*;
 
-pub use filter::{load_filter, Container, Filter};
+pub use filter::{load_filter, Container, WrapperApi};
 
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
@@ -144,6 +144,7 @@ impl Drop for Buffer {
 
 #[cfg(test)]
 mod tests {
+    use crate::filter::*;
     use crate::*;
 
     #[test]
@@ -161,11 +162,12 @@ mod tests {
             data.as_mut_ptr(),
         );
 
-        let brighter_path = "./libbrighter.so";
-        let mgr = Manager::new();
-        assert!(mgr.load(brighter_path));
-        let brighter: unsafe extern "C" fn(*const Buffer, *mut Buffer) -> i32 =
-            mgr.filter(brighter_path, "brighter").unwrap().get();
+        #[derive(WrapperApi)]
+        struct Brighter {
+            brighter: unsafe extern "C" fn(a: *const Buffer, b: *mut Buffer) -> i32,
+        }
+
+        let api = load_filter::<Brighter>("./libbrighter.so").unwrap();
 
         let mut out = Buffer::new(
             width as i32,
@@ -176,7 +178,7 @@ mod tests {
         );
 
         unsafe {
-            assert!(brighter(&buf, &mut out) == 0);
+            assert!(api.brighter(&buf, &mut out) == 0);
         }
 
         for i in data {
