@@ -1,10 +1,10 @@
 pub mod runtime;
 
-mod filter;
+pub mod filter;
 
 use runtime::*;
 
-pub use filter::{Filter, Manager};
+pub use filter::{load_filter, Container, Filter};
 
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
