@@ -219,14 +219,14 @@ pub fn set_gpu_device(i: i32) {
 }
 
 static CARGO_LINK_SEARCH: &'static str = "cargo:rustc-link-search=native=";
-static CARGO_LINK_LIB_STATIC: &'static str = "cargo:rustc-link-lib=static=";
+static CARGO_LINK_LIB: &'static str = "cargo:rustc-link-lib=";
 
 pub fn link_lib(path: Option<&str>, name: &str) {
     if let Some(path) = path {
         println!("{}{}", CARGO_LINK_SEARCH, path);
     }
 
-    println!("{}{}", CARGO_LINK_LIB_STATIC, name);
+    println!("{}{}", CARGO_LINK_LIB, name);
 }
 
 pub fn link<P: AsRef<std::path::Path>>(filename: P) {
