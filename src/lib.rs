@@ -217,28 +217,3 @@ pub fn set_gpu_device(i: i32) {
         halide_set_gpu_device(i);
     }
 }
-
-static CARGO_LINK_SEARCH: &'static str = "cargo:rustc-link-search=native=";
-static CARGO_LINK_LIB: &'static str = "cargo:rustc-link-lib=";
-
-pub fn link_lib(path: Option<&str>, name: &str) {
-    if let Some(path) = path {
-        println!("{}{}", CARGO_LINK_SEARCH, path);
-    }
-
-    println!("{}{}", CARGO_LINK_LIB, name);
-}
-
-pub fn link<P: AsRef<std::path::Path>>(filename: P) {
-    let mut filename = filename.as_ref().to_path_buf();
-    let name = filename.file_stem().expect("Invalid filename");
-    let s = String::from(name.to_str().expect("Invalid filename"));
-    let mut tmp: &str = &s;
-
-    if s.starts_with("lib") {
-        tmp = &s[3..]
-    }
-
-    filename.pop();
-    link_lib(filename.to_str(), tmp);
-}
