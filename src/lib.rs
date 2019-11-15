@@ -4,8 +4,6 @@ pub mod filter;
 
 use runtime::*;
 
-pub use filter::{load_filter, Container, WrapperApi};
-
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
 pub enum Kind {
@@ -168,7 +166,7 @@ mod tests {
             brighter: unsafe extern "C" fn(a: *const Buffer, b: *mut Buffer) -> i32,
         }
 
-        let api = load_filter::<Brighter>("./libbrighter.so").unwrap();
+        let api = filter::load::<Brighter>("./libbrighter.so").unwrap();
 
         let mut out = Buffer::new(
             width as i32,
