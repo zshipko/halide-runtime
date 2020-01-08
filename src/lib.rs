@@ -1,7 +1,7 @@
-pub mod runtime;
+//! halide-runtime is a Rust wrapper for the [Halide](https://github.com/halide/Halide) runtime
 
 pub mod filter;
-
+pub mod runtime;
 use runtime::*;
 
 #[repr(u8)]

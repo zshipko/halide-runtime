@@ -3,6 +3,11 @@ name = "halide-runtime"
 version = "0.1.0"
 authors = ["Zach Shipko <zachshipko@gmail.com>"]
 edition = "2018"
+license = "ISC"
+repository = "https://github.com/zshipko/halide-runtime"
+documentation = "https://docs.rs/halide-runtime"
+readme = "README.md"
+description = "Bindings to the Halide runtime"
 
 [dependencies]
 dlopen = "0.1.8"
