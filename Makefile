@@ -12,6 +12,7 @@ bindings:
 		--whitelist-type 'halide.*_t' \
 		--whitelist-function 'halide.*' \
 		--no-doc-comments \
+		--no-layout-tests \
 	$(HEADER) > src/runtime.rs
 
 test:

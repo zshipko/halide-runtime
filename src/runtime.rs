@@ -2,6 +2,7 @@
 
 #![allow(warnings)]
 
+pub type size_t = ::std::os::raw::c_ulong;
 pub type __int8_t = ::std::os::raw::c_schar;
 pub type __uint8_t = ::std::os::raw::c_uchar;
 pub type __int16_t = ::std::os::raw::c_short;
@@ -51,56 +52,10 @@ extern "C" {
 pub struct halide_mutex {
     pub _private: [usize; 1usize],
 }
-#[test]
-fn bindgen_test_layout_halide_mutex() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_mutex>(),
-        8usize,
-        concat!("Size of: ", stringify!(halide_mutex))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_mutex>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_mutex))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_mutex>()))._private as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_mutex),
-            "::",
-            stringify!(_private)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_cond {
     pub _private: [usize; 1usize],
-}
-#[test]
-fn bindgen_test_layout_halide_cond() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_cond>(),
-        8usize,
-        concat!("Size of: ", stringify!(halide_cond))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_cond>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_cond))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_cond>()))._private as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_cond),
-            "::",
-            stringify!(_private)
-        )
-    );
 }
 extern "C" {
     pub fn halide_mutex_lock(mutex: *mut halide_mutex);
@@ -179,71 +134,11 @@ extern "C" {
 pub struct halide_semaphore_t {
     pub _private: [u64; 2usize],
 }
-#[test]
-fn bindgen_test_layout_halide_semaphore_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_semaphore_t>(),
-        16usize,
-        concat!("Size of: ", stringify!(halide_semaphore_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_semaphore_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_semaphore_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_semaphore_t>()))._private as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_semaphore_t),
-            "::",
-            stringify!(_private)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_semaphore_acquire_t {
     pub semaphore: *mut halide_semaphore_t,
     pub count: ::std::os::raw::c_int,
-}
-#[test]
-fn bindgen_test_layout_halide_semaphore_acquire_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_semaphore_acquire_t>(),
-        16usize,
-        concat!("Size of: ", stringify!(halide_semaphore_acquire_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_semaphore_acquire_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_semaphore_acquire_t))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_semaphore_acquire_t>())).semaphore as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_semaphore_acquire_t),
-            "::",
-            stringify!(semaphore)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_semaphore_acquire_t>())).count as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_semaphore_acquire_t),
-            "::",
-            stringify!(count)
-        )
-    );
 }
 extern "C" {
     pub fn halide_semaphore_init(
@@ -299,115 +194,6 @@ pub struct halide_parallel_task_t {
     pub extent: ::std::os::raw::c_int,
     pub min_threads: ::std::os::raw::c_int,
     pub serial: bool,
-}
-#[test]
-fn bindgen_test_layout_halide_parallel_task_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_parallel_task_t>(),
-        56usize,
-        concat!("Size of: ", stringify!(halide_parallel_task_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_parallel_task_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_parallel_task_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).fn_ as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(fn_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).closure as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(closure)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).name as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_parallel_task_t>())).semaphores as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(semaphores)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_parallel_task_t>())).num_semaphores as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(num_semaphores)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).min as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(min)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).extent as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(extent)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_parallel_task_t>())).min_threads as *const _ as usize
-        },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(min_threads)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_parallel_task_t>())).serial as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_parallel_task_t),
-            "::",
-            stringify!(serial)
-        )
-    );
 }
 extern "C" {
     pub fn halide_do_parallel_tasks(
@@ -551,7 +337,7 @@ extern "C" {
 extern "C" {
     pub fn halide_malloc(
         user_context: *mut ::std::os::raw::c_void,
-        x: usize,
+        x: size_t,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
@@ -560,7 +346,7 @@ extern "C" {
 extern "C" {
     pub fn halide_default_malloc(
         user_context: *mut ::std::os::raw::c_void,
-        x: usize,
+        x: size_t,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
@@ -572,7 +358,7 @@ extern "C" {
 pub type halide_malloc_t = ::std::option::Option<
     unsafe extern "C" fn(
         arg1: *mut ::std::os::raw::c_void,
-        arg2: usize,
+        arg2: size_t,
     ) -> *mut ::std::os::raw::c_void,
 >;
 pub type halide_free_t = ::std::option::Option<
@@ -663,49 +449,6 @@ pub struct halide_type_t {
     pub bits: u8,
     pub lanes: u16,
 }
-#[test]
-fn bindgen_test_layout_halide_type_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_type_t>(),
-        4usize,
-        concat!("Size of: ", stringify!(halide_type_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_type_t>(),
-        2usize,
-        concat!("Alignment of ", stringify!(halide_type_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_type_t>())).code as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_type_t),
-            "::",
-            stringify!(code)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_type_t>())).bits as *const _ as usize },
-        1usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_type_t),
-            "::",
-            stringify!(bits)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_type_t>())).lanes as *const _ as usize },
-        2usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_type_t),
-            "::",
-            stringify!(lanes)
-        )
-    );
-}
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum halide_trace_event_code_t {
@@ -733,113 +476,6 @@ pub struct halide_trace_event_t {
     pub parent_id: i32,
     pub value_index: i32,
     pub dimensions: i32,
-}
-#[test]
-fn bindgen_test_layout_halide_trace_event_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_trace_event_t>(),
-        56usize,
-        concat!("Size of: ", stringify!(halide_trace_event_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_trace_event_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_trace_event_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).func as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(func)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).value as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(value)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_trace_event_t>())).coordinates as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(coordinates)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).trace_tag as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(trace_tag)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).type_ as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).event as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(event)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).parent_id as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(parent_id)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_trace_event_t>())).value_index as *const _ as usize
-        },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(value_index)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_event_t>())).dimensions as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_event_t),
-            "::",
-            stringify!(dimensions)
-        )
-    );
 }
 extern "C" {
     pub fn halide_trace(
@@ -872,93 +508,6 @@ pub struct halide_trace_packet_t {
     pub parent_id: i32,
     pub value_index: i32,
     pub dimensions: i32,
-}
-#[test]
-fn bindgen_test_layout_halide_trace_packet_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_trace_packet_t>(),
-        28usize,
-        concat!("Size of: ", stringify!(halide_trace_packet_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_trace_packet_t>(),
-        4usize,
-        concat!("Alignment of ", stringify!(halide_trace_packet_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_packet_t>())).size as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_packet_t>())).id as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(id)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_packet_t>())).type_ as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_packet_t>())).event as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(event)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_trace_packet_t>())).parent_id as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(parent_id)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_trace_packet_t>())).value_index as *const _ as usize
-        },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(value_index)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_trace_packet_t>())).dimensions as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_trace_packet_t),
-            "::",
-            stringify!(dimensions)
-        )
-    );
 }
 extern "C" {
     pub fn halide_set_trace_file(fd: ::std::os::raw::c_int);
@@ -1083,215 +632,6 @@ pub struct halide_device_interface_t {
     >,
     pub impl_: *const halide_device_interface_impl_t,
 }
-#[test]
-fn bindgen_test_layout_halide_device_interface_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_device_interface_t>(),
-        128usize,
-        concat!("Size of: ", stringify!(halide_device_interface_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_device_interface_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_device_interface_t))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_malloc as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_malloc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_free as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_free)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_sync as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_sync)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_release as *const _
-                as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_release)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).copy_to_host as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(copy_to_host)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).copy_to_device as *const _
-                as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(copy_to_device)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_and_host_malloc as *const _
-                as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_and_host_malloc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_and_host_free as *const _
-                as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_and_host_free)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).buffer_copy as *const _ as usize
-        },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(buffer_copy)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_crop as *const _ as usize
-        },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_crop)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_slice as *const _ as usize
-        },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_slice)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).device_release_crop as *const _
-                as usize
-        },
-        88usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(device_release_crop)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).wrap_native as *const _ as usize
-        },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(wrap_native)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).detach_native as *const _ as usize
-        },
-        104usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(detach_native)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_interface_t>())).compute_capability as *const _
-                as usize
-        },
-        112usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(compute_capability)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_device_interface_t>())).impl_ as *const _ as usize },
-        120usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_interface_t),
-            "::",
-            stringify!(impl_)
-        )
-    );
-}
 extern "C" {
     pub fn halide_device_release(
         user_context: *mut ::std::os::raw::c_void,
@@ -1375,38 +715,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn halide_copy_to_host_legacy(
-        user_context: *mut ::std::os::raw::c_void,
-        buf: *mut buffer_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_copy_to_device_legacy(
-        user_context: *mut ::std::os::raw::c_void,
-        buf: *mut buffer_t,
-        device_interface: *const halide_device_interface_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_device_sync_legacy(
-        user_context: *mut ::std::os::raw::c_void,
-        buf: *mut buffer_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_device_malloc_legacy(
-        user_context: *mut ::std::os::raw::c_void,
-        buf: *mut buffer_t,
-        device_interface: *const halide_device_interface_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_device_free_legacy(
-        user_context: *mut ::std::os::raw::c_void,
-        buf: *mut buffer_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
     pub fn halide_set_gpu_device(n: ::std::os::raw::c_int);
 }
 extern "C" {
@@ -1445,6 +753,21 @@ extern "C" {
 }
 extern "C" {
     pub fn halide_memoization_cache_cleanup();
+}
+extern "C" {
+    pub fn halide_msan_check_memory_is_initialized(
+        user_context: *mut ::std::os::raw::c_void,
+        ptr: *const ::std::os::raw::c_void,
+        len: u64,
+        name: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn halide_msan_check_buffer_is_initialized(
+        user_context: *mut ::std::os::raw::c_void,
+        buffer: *mut halide_buffer_t,
+        buf_name: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn halide_msan_annotate_memory_is_initialized(
@@ -1497,8 +820,8 @@ pub enum halide_error_code_t {
     halide_error_code_fold_factor_too_small = -26,
     halide_error_code_requirement_failed = -27,
     halide_error_code_buffer_extents_negative = -28,
-    halide_error_code_failed_to_upgrade_buffer_t = -29,
-    halide_error_code_failed_to_downgrade_buffer_t = -30,
+    halide_error_code_unused_29 = -29,
+    halide_error_code_unused_30 = -30,
     halide_error_code_specialize_fail = -31,
     halide_error_code_device_wrap_native_failed = -32,
     halide_error_code_device_detach_native_failed = -33,
@@ -1512,7 +835,7 @@ pub enum halide_error_code_t {
     halide_error_code_device_crop_failed = -41,
     halide_error_code_incompatible_device_interface = -42,
     halide_error_code_bad_dimensions = -43,
-    halide_error_code_integer_division_by_zero = -44,
+    halide_error_code_device_dirty_with_no_device_support = -44,
 }
 extern "C" {
     pub fn halide_error_bounds_inference_call_failed(
@@ -1691,20 +1014,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn halide_error_failed_to_upgrade_buffer_t(
-        user_context: *mut ::std::os::raw::c_void,
-        input_name: *const ::std::os::raw::c_char,
-        reason: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_error_failed_to_downgrade_buffer_t(
-        user_context: *mut ::std::os::raw::c_void,
-        input_name: *const ::std::os::raw::c_char,
-        reason: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
     pub fn halide_error_bad_fold(
         user_context: *mut ::std::os::raw::c_void,
         func_name: *const ::std::os::raw::c_char,
@@ -1768,8 +1077,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn halide_error_integer_division_by_zero(
+    pub fn halide_error_device_dirty_with_no_device_support(
         user_context: *mut ::std::os::raw::c_void,
+        buffer_name: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 #[repr(u32)]
@@ -1827,21 +1137,20 @@ pub enum halide_target_feature_t {
     halide_target_feature_hvx_v66 = 49,
     halide_target_feature_cl_half = 50,
     halide_target_feature_strict_float = 51,
-    halide_target_feature_legacy_buffer_wrappers = 52,
-    halide_target_feature_tsan = 53,
-    halide_target_feature_asan = 54,
-    halide_target_feature_d3d12compute = 55,
-    halide_target_feature_check_unsafe_promises = 56,
-    halide_target_feature_hexagon_dma = 57,
-    halide_target_feature_embed_bitcode = 58,
-    halide_target_feature_enable_llvm_loop_opt = 59,
-    halide_target_feature_disable_llvm_loop_opt = 60,
-    halide_target_feature_wasm_simd128 = 61,
-    halide_target_feature_wasm_signext = 62,
-    halide_target_feature_sve = 63,
-    halide_target_feature_sve2 = 64,
-    halide_target_feature_egl = 65,
-    halide_target_feature_end = 66,
+    halide_target_feature_tsan = 52,
+    halide_target_feature_asan = 53,
+    halide_target_feature_d3d12compute = 54,
+    halide_target_feature_check_unsafe_promises = 55,
+    halide_target_feature_hexagon_dma = 56,
+    halide_target_feature_embed_bitcode = 57,
+    halide_target_feature_enable_llvm_loop_opt = 58,
+    halide_target_feature_disable_llvm_loop_opt = 59,
+    halide_target_feature_wasm_simd128 = 60,
+    halide_target_feature_wasm_signext = 61,
+    halide_target_feature_sve = 62,
+    halide_target_feature_sve2 = 63,
+    halide_target_feature_egl = 64,
+    halide_target_feature_end = 65,
 }
 extern "C" {
     pub fn halide_can_use_target_features(
@@ -1874,59 +1183,6 @@ pub struct halide_dimension_t {
     pub stride: i32,
     pub flags: u32,
 }
-#[test]
-fn bindgen_test_layout_halide_dimension_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_dimension_t>(),
-        16usize,
-        concat!("Size of: ", stringify!(halide_dimension_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_dimension_t>(),
-        4usize,
-        concat!("Alignment of ", stringify!(halide_dimension_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_dimension_t>())).min as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_dimension_t),
-            "::",
-            stringify!(min)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_dimension_t>())).extent as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_dimension_t),
-            "::",
-            stringify!(extent)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_dimension_t>())).stride as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_dimension_t),
-            "::",
-            stringify!(stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_dimension_t>())).flags as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_dimension_t),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_buffer_t {
@@ -1938,242 +1194,6 @@ pub struct halide_buffer_t {
     pub dimensions: i32,
     pub dim: *mut halide_dimension_t,
     pub padding: *mut ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout_halide_buffer_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_buffer_t>(),
-        56usize,
-        concat!("Size of: ", stringify!(halide_buffer_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_buffer_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_buffer_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).device as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(device)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_buffer_t>())).device_interface as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(device_interface)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).host as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(host)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).flags as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).type_ as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).dimensions as *const _ as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(dimensions)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).dim as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(dim)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_buffer_t>())).padding as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_buffer_t),
-            "::",
-            stringify!(padding)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct buffer_t {
-    pub dev: u64,
-    pub host: *mut u8,
-    pub extent: [i32; 4usize],
-    pub stride: [i32; 4usize],
-    pub min: [i32; 4usize],
-    pub elem_size: i32,
-    pub host_dirty: bool,
-    pub dev_dirty: bool,
-    pub _padding: [u8; 2usize],
-}
-#[test]
-fn bindgen_test_layout_buffer_t() {
-    assert_eq!(
-        ::std::mem::size_of::<buffer_t>(),
-        72usize,
-        concat!("Size of: ", stringify!(buffer_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<buffer_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(buffer_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).dev as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(dev)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).host as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(host)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).extent as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(extent)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).stride as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(stride)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).min as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(min)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).elem_size as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(elem_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).host_dirty as *const _ as usize },
-        68usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(host_dirty)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>())).dev_dirty as *const _ as usize },
-        69usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(dev_dirty)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<buffer_t>()))._padding as *const _ as usize },
-        70usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(buffer_t),
-            "::",
-            stringify!(_padding)
-        )
-    );
-}
-extern "C" {
-    pub fn halide_upgrade_buffer_t(
-        user_context: *mut ::std::os::raw::c_void,
-        name: *const ::std::os::raw::c_char,
-        old_buf: *const buffer_t,
-        new_buf: *mut halide_buffer_t,
-        bounds_query_only: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_downgrade_buffer_t(
-        user_context: *mut ::std::os::raw::c_void,
-        name: *const ::std::os::raw::c_char,
-        new_buf: *const halide_buffer_t,
-        old_buf: *mut buffer_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn halide_downgrade_buffer_t_device_fields(
-        user_context: *mut ::std::os::raw::c_void,
-        name: *const ::std::os::raw::c_char,
-        new_buf: *const halide_buffer_t,
-        old_buf: *mut buffer_t,
-    ) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -2197,190 +1217,6 @@ pub union halide_scalar_value_t__bindgen_ty_1 {
     pub handle: *mut ::std::os::raw::c_void,
     _bindgen_union_align: u64,
 }
-#[test]
-fn bindgen_test_layout_halide_scalar_value_t__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_scalar_value_t__bindgen_ty_1>(),
-        8usize,
-        concat!("Size of: ", stringify!(halide_scalar_value_t__bindgen_ty_1))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_scalar_value_t__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).b as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(b)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).i8 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(i8)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).i16 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(i16)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).i32 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(i32)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).i64 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(i64)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).u8 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(u8)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).u16 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(u16)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).u32 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(u32)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).u64 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(u64)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).f32 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(f32)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).f64 as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(f64)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_scalar_value_t__bindgen_ty_1>())).handle as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t__bindgen_ty_1),
-            "::",
-            stringify!(handle)
-        )
-    );
-}
-#[test]
-fn bindgen_test_layout_halide_scalar_value_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_scalar_value_t>(),
-        8usize,
-        concat!("Size of: ", stringify!(halide_scalar_value_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_scalar_value_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_scalar_value_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_scalar_value_t>())).u as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_scalar_value_t),
-            "::",
-            stringify!(u)
-        )
-    );
-}
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum halide_argument_kind_t {
@@ -2401,123 +1237,6 @@ pub struct halide_filter_argument_t {
     pub scalar_estimate: *const halide_scalar_value_t,
     pub buffer_estimates: *const *const i64,
 }
-#[test]
-fn bindgen_test_layout_halide_filter_argument_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_filter_argument_t>(),
-        64usize,
-        concat!("Size of: ", stringify!(halide_filter_argument_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_filter_argument_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_filter_argument_t))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_filter_argument_t>())).name as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_filter_argument_t>())).kind as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(kind)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).dimensions as *const _ as usize
-        },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(dimensions)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_filter_argument_t>())).type_ as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).scalar_def as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(scalar_def)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).scalar_min as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(scalar_min)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).scalar_max as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(scalar_max)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).scalar_estimate as *const _
-                as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(scalar_estimate)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_argument_t>())).buffer_estimates as *const _
-                as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_argument_t),
-            "::",
-            stringify!(buffer_estimates)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_filter_metadata_t {
@@ -2526,75 +1245,6 @@ pub struct halide_filter_metadata_t {
     pub arguments: *const halide_filter_argument_t,
     pub target: *const ::std::os::raw::c_char,
     pub name: *const ::std::os::raw::c_char,
-}
-#[test]
-fn bindgen_test_layout_halide_filter_metadata_t() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_filter_metadata_t>(),
-        32usize,
-        concat!("Size of: ", stringify!(halide_filter_metadata_t))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_filter_metadata_t>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_filter_metadata_t))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_metadata_t>())).version as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_metadata_t),
-            "::",
-            stringify!(version)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_metadata_t>())).num_arguments as *const _ as usize
-        },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_metadata_t),
-            "::",
-            stringify!(num_arguments)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_filter_metadata_t>())).arguments as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_metadata_t),
-            "::",
-            stringify!(arguments)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_filter_metadata_t>())).target as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_metadata_t),
-            "::",
-            stringify!(target)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_filter_metadata_t>())).name as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_filter_metadata_t),
-            "::",
-            stringify!(name)
-        )
-    );
 }
 extern "C" {
     pub fn halide_register_argv_and_metadata(
@@ -2618,126 +1268,6 @@ pub struct halide_profiler_func_stats {
     pub name: *const ::std::os::raw::c_char,
     pub num_allocs: ::std::os::raw::c_int,
 }
-#[test]
-fn bindgen_test_layout_halide_profiler_func_stats() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_profiler_func_stats>(),
-        72usize,
-        concat!("Size of: ", stringify!(halide_profiler_func_stats))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_profiler_func_stats>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_profiler_func_stats))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_profiler_func_stats>())).time as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(time)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).memory_current as *const _
-                as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(memory_current)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).memory_peak as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(memory_peak)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).memory_total as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(memory_total)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).stack_peak as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(stack_peak)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).active_threads_numerator
-                as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(active_threads_numerator)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).active_threads_denominator
-                as *const _ as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(active_threads_denominator)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_profiler_func_stats>())).name as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_func_stats>())).num_allocs as *const _ as usize
-        },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_func_stats),
-            "::",
-            stringify!(num_allocs)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_profiler_pipeline_stats {
@@ -2756,195 +1286,6 @@ pub struct halide_profiler_pipeline_stats {
     pub samples: ::std::os::raw::c_int,
     pub num_allocs: ::std::os::raw::c_int,
 }
-#[test]
-fn bindgen_test_layout_halide_profiler_pipeline_stats() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_profiler_pipeline_stats>(),
-        96usize,
-        concat!("Size of: ", stringify!(halide_profiler_pipeline_stats))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_profiler_pipeline_stats>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_profiler_pipeline_stats))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).time as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(time)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).memory_current as *const _
-                as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(memory_current)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).memory_peak as *const _
-                as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(memory_peak)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).memory_total as *const _
-                as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(memory_total)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).active_threads_numerator
-                as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(active_threads_numerator)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).active_threads_denominator
-                as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(active_threads_denominator)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).name as *const _ as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).funcs as *const _ as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(funcs)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).next as *const _ as usize
-        },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(next)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).num_funcs as *const _
-                as usize
-        },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(num_funcs)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).first_func_id as *const _
-                as usize
-        },
-        76usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(first_func_id)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).runs as *const _ as usize
-        },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(runs)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).samples as *const _ as usize
-        },
-        84usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(samples)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_pipeline_stats>())).num_allocs as *const _
-                as usize
-        },
-        88usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_pipeline_stats),
-            "::",
-            stringify!(num_allocs)
-        )
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct halide_profiler_state {
@@ -2961,112 +1302,6 @@ pub struct halide_profiler_state {
         ),
     >,
     pub sampling_thread: *mut halide_thread,
-}
-#[test]
-fn bindgen_test_layout_halide_profiler_state() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_profiler_state>(),
-        48usize,
-        concat!("Size of: ", stringify!(halide_profiler_state))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_profiler_state>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_profiler_state))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_profiler_state>())).lock as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(lock)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).sleep_time as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(sleep_time)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).first_free_id as *const _ as usize
-        },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(first_free_id)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).current_func as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(current_func)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).active_threads as *const _ as usize
-        },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(active_threads)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<halide_profiler_state>())).pipelines as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(pipelines)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).get_remote_profiler_state as *const _
-                as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(get_remote_profiler_state)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_profiler_state>())).sampling_thread as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_profiler_state),
-            "::",
-            stringify!(sampling_thread)
-        )
-    );
 }
 extern "C" {
     pub fn halide_profiler_get_state() -> *mut halide_profiler_state;
@@ -3107,44 +1342,6 @@ pub struct halide_device_allocation_pool {
         unsafe extern "C" fn(user_context: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int,
     >,
     pub next: *mut halide_device_allocation_pool,
-}
-#[test]
-fn bindgen_test_layout_halide_device_allocation_pool() {
-    assert_eq!(
-        ::std::mem::size_of::<halide_device_allocation_pool>(),
-        16usize,
-        concat!("Size of: ", stringify!(halide_device_allocation_pool))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<halide_device_allocation_pool>(),
-        8usize,
-        concat!("Alignment of ", stringify!(halide_device_allocation_pool))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_allocation_pool>())).release_unused as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_allocation_pool),
-            "::",
-            stringify!(release_unused)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<halide_device_allocation_pool>())).next as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(halide_device_allocation_pool),
-            "::",
-            stringify!(next)
-        )
-    );
 }
 extern "C" {
     pub fn halide_register_device_allocation_pool(arg1: *mut halide_device_allocation_pool);
