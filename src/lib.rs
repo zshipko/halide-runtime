@@ -1,5 +1,7 @@
 //! halide-runtime is a Rust wrapper for the [Halide](https://github.com/halide/Halide) runtime
 
+use std::marker::PhantomData;
+
 pub mod filter;
 pub mod runtime;
 use runtime::*;
@@ -35,7 +37,7 @@ impl Type {
 /// Buffer wraps read-only image data in a way that can be passed
 /// as an argument to Halide filters
 #[repr(C)]
-pub struct Buffer(halide_buffer_t);
+pub struct Buffer<'a>(halide_buffer_t, PhantomData<&'a ()>);
 
 fn halide_buffer(
     width: i32,
@@ -93,7 +95,7 @@ fn halide_buffer(
     buf
 }
 
-impl<'a> From<&'a halide_buffer_t> for Buffer {
+impl<'a> From<&'a halide_buffer_t> for Buffer<'a> {
     fn from(buf: &'a halide_buffer_t) -> Buffer {
         let mut dest = buf.clone();
         let mut dim = Vec::new();
@@ -107,20 +109,34 @@ impl<'a> From<&'a halide_buffer_t> for Buffer {
         dest.dim = dim.as_mut_ptr();
         std::mem::forget(dim);
 
-        Buffer(buf.clone())
+        Buffer(dest, PhantomData)
     }
 }
 
-impl Clone for Buffer {
+impl<'a> Clone for Buffer<'a> {
     fn clone(&self) -> Self {
-        Buffer::from(&self.0)
+        let mut dest = self.0.clone();
+        let mut dim = Vec::new();
+
+        for i in 0..dest.dimensions as usize {
+            unsafe {
+                dim.push(*dest.dim.add(i));
+            }
+        }
+
+        dest.dim = dim.as_mut_ptr();
+        std::mem::forget(dim);
+
+        Buffer(dest, PhantomData)
     }
 }
 
-impl Buffer {
-    pub fn new(width: i32, height: i32, channels: i32, t: Type, data: *mut u8) -> Self {
-        assert!(!data.is_null());
-        Buffer(halide_buffer(width, height, channels, t, data))
+impl<'a> Buffer<'a> {
+    pub fn new<T>(width: i32, height: i32, channels: i32, t: Type, data: &'a mut [T]) -> Self {
+        Buffer(
+            halide_buffer(width, height, channels, t, data.as_mut_ptr() as *mut u8),
+            PhantomData,
+        )
     }
 
     pub fn set_device(&mut self, device: u64, handle: Device) {
@@ -129,7 +145,7 @@ impl Buffer {
     }
 }
 
-impl Drop for Buffer {
+impl<'a> Drop for Buffer<'a> {
     fn drop(&mut self) {
         unsafe {
             Vec::from_raw_parts(
@@ -152,14 +168,8 @@ mod tests {
         let height = 600;
         let channels = 3;
         let t = Type(Kind::UInt, 8);
-        let mut data = vec![0u8; width * height * channels * t.size()];
-        let buf = Buffer::new(
-            width as i32,
-            height as i32,
-            channels as i32,
-            t,
-            data.as_mut_ptr(),
-        );
+        let mut input = vec![0u8; width * height * channels * t.size()];
+        let mut output = vec![0u8; width * height * channels * t.size()];
 
         #[derive(WrapperApi)]
         struct Brighter {
@@ -168,20 +178,17 @@ mod tests {
 
         let api = filter::load::<Brighter>("./libbrighter.so").unwrap();
 
-        let mut out = Buffer::new(
-            width as i32,
-            height as i32,
-            channels as i32,
-            t,
-            data.as_mut_ptr(),
-        );
+        {
+            let buf = Buffer::new(width as i32, height as i32, channels as i32, t, &mut input);
+            let mut out = Buffer::new(width as i32, height as i32, channels as i32, t, &mut output);
 
-        unsafe {
-            assert!(api.brighter(&buf, &mut out) == 0);
+            unsafe {
+                assert!(api.brighter(&buf, &mut out) == 0);
+            }
         }
 
-        for i in data {
-            assert!(i == 10);
+        for i in output.iter() {
+            assert!(*i == 10);
         }
     }
 }

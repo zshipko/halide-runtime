@@ -15,7 +15,7 @@ bindings:
 	$(HEADER) > src/runtime.rs
 
 test:
-	halide-build run -g brighter.cpp -- -g brighter -o . -e o target=host
+	halide run -g brighter.cpp -- -g brighter -o . -e o target=host
 	$(CC) -shared -o libbrighter.so brighter.o
 	cargo test
 
