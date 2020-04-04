@@ -34,9 +34,9 @@ impl Type {
     }
 }
 
-/// Buffer wraps read-only image data in a way that can be passed
+/// Buffer wraps image data in a way that can be passed
 /// as an argument to Halide filters
-#[repr(C)]
+#[repr(transparent)]
 pub struct Buffer<'a>(halide_buffer_t, PhantomData<&'a ()>);
 
 fn halide_buffer(
