@@ -15,12 +15,20 @@ pub enum Kind {
 }
 
 /// Type is used to define the type of pixel data in terms of kind and bits
-/// For example, Type(Kind::UInt, 8) uses one 8-bit unsigned integer per channel
-/// and Type(Kind::Float, 32) uses a float per channel, etc...
+/// For example, Type::new(Kind::UInt, 8) uses one 8-bit unsigned integer per channel
+/// and Type::new(Kind::Float, 32) uses a float per channel, etc...
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
-pub struct Type(pub Kind, pub u8);
+pub struct Type(pub Kind, pub u8, pub u16);
 
 impl Type {
+    pub fn new(kind: Kind, bits: u8) -> Type {
+        Type(kind, bits, 1)
+    }
+
+    pub fn new_with_lanes(kind: Kind, bits: u8, lanes: u16) -> Type {
+        Type(kind, bits, lanes)
+    }
+
     pub fn bits(&self) -> u8 {
         return self.1;
     }
@@ -49,7 +57,7 @@ fn halide_buffer(
     let t = halide_type_t {
         code: t.0 as u8,
         bits: t.1,
-        lanes: 1,
+        lanes: t.2,
     };
 
     let mut dim = Vec::new();
@@ -167,7 +175,7 @@ mod tests {
         let width = 800;
         let height = 600;
         let channels = 3;
-        let t = Type(Kind::UInt, 8);
+        let t = Type::new(Kind::UInt, 8);
         let mut input = vec![0u8; width * height * channels * t.size()];
         let mut output = vec![0u8; width * height * channels * t.size()];
 
