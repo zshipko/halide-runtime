@@ -2,7 +2,6 @@
 
 use std::marker::PhantomData;
 
-pub mod filter;
 pub mod runtime;
 use runtime::*;
 
@@ -146,6 +145,26 @@ impl<'a> Buffer<'a> {
             PhantomData,
         )
     }
+
+    pub fn new_const<T>(width: i32, height: i32, channels: i32, t: Type, data: &'a [T]) -> Self {
+        Buffer(
+            halide_buffer(width, height, channels, t, data.as_ptr() as *mut u8),
+            PhantomData,
+        )
+    }
+
+    pub fn copy_to_host(&mut self) {
+        unsafe {
+            runtime::halide_copy_to_host(std::ptr::null_mut(), &mut self.0);
+        }
+    }
+
+    #[cfg(feature = "gpu")]
+    pub fn copy_to_device(&mut self, device: &gpu::Device) {
+        unsafe {
+            runtime::halide_copy_to_device(std::ptr::null_mut(), &mut self.0, device.0);
+        }
+    }
 }
 
 impl<'a> Drop for Buffer<'a> {
@@ -160,53 +179,22 @@ impl<'a> Drop for Buffer<'a> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::filter::*;
-    use crate::*;
-
-    #[test]
-    fn it_works() {
-        let width = 800;
-        let height = 600;
-        let channels = 3;
-        let t = Type::new(Kind::UInt, 8);
-        let mut input = vec![0u8; width * height * channels * t.size()];
-        let mut output = vec![0u8; width * height * channels * t.size()];
-
-        #[derive(WrapperApi)]
-        struct Brighter {
-            brighter: unsafe extern "C" fn(a: *const Buffer, b: *mut Buffer) -> i32,
-        }
-
-        let api = filter::load::<Brighter>("./libbrighter.so").unwrap();
-
-        {
-            let buf = Buffer::new(width as i32, height as i32, channels as i32, t, &mut input);
-            let mut out = Buffer::new(width as i32, height as i32, channels as i32, t, &mut output);
-
-            unsafe {
-                assert!(api.brighter(&buf, &mut out) == 0);
-            }
-        }
-
-        for i in output.iter() {
-            assert!(*i == 10);
-        }
-    }
-}
-
 #[cfg(feature = "gpu")]
 pub mod gpu {
+    use crate::*;
+
     extern "C" {
         fn halide_opencl_device_interface() -> *const halide_device_interface_t;
 
         fn halide_opengl_device_interface() -> *const halide_device_interface_t;
 
         fn halide_cuda_device_interface() -> *const halide_device_interface_t;
+
+        #[cfg(target_os = "macos")]
+        fn halide_metal_device_interface() -> *const halide_device_interface_t;
     }
 
-    pub struct Device(*const halide_device_interface_t);
+    pub struct Device(pub *const halide_device_interface_t);
 
     impl Device {
         pub fn opencl() -> Device {
@@ -220,6 +208,11 @@ pub mod gpu {
         pub fn cuda() -> Device {
             unsafe { Device(halide_cuda_device_interface()) }
         }
+
+        #[cfg(target_os = "macos")]
+        pub fn metal() -> Device {
+            unsafe { Device(halide_metal_device_interface()) }
+        }
     }
 
     pub fn set_gpu_device(i: i32) {
@@ -228,10 +221,52 @@ pub mod gpu {
         }
     }
 
+    pub fn get_gpu_device() {
+        unsafe {
+            halide_get_gpu_device(std::ptr::null_mut());
+        }
+    }
+
     impl<'a> Buffer<'a> {
         pub fn set_device(&mut self, device: u64, handle: Device) {
             self.0.device = device;
             self.0.device_interface = handle.0;
+        }
+    }
+}
+
+pub type Status = runtime::Status;
+
+extern "C" {
+    pub fn brighter(a: *const Buffer, b: *mut Buffer) -> Status;
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn it_works() {
+        let width = 800;
+        let height = 600;
+        let channels = 3;
+        let t = Type::new(Kind::UInt, 8);
+        let input = vec![0u8; width * height * channels * t.size()];
+        let mut output = vec![0u8; width * height * channels * t.size()];
+
+        {
+            let buf = Buffer::new_const(width as i32, height as i32, channels as i32, t, &input);
+            let mut out = Buffer::new(width as i32, height as i32, channels as i32, t, &mut output);
+
+            unsafe {
+                assert!(brighter(&buf, &mut out) == Status::Success);
+            }
+
+            out.copy_to_host();
+        }
+
+        for i in output.iter() {
+            assert!(*i == 10);
         }
     }
 }

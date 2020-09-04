@@ -21,13 +21,15 @@ struct halide_handle_traits;
 extern "C" {
 #endif
 
-// Note that you should not use "inline" along with HALIDE_ALWAYS_INLINE;
-// it is not necessary, and may produce warnings for some build configurations.
 #ifdef _MSC_VER
+// Note that (for MSVC) you should not use "inline" along with HALIDE_ALWAYS_INLINE;
+// it is not necessary, and may produce warnings for some build configurations.
 #define HALIDE_ALWAYS_INLINE __forceinline
 #define HALIDE_NEVER_INLINE __declspec(noinline)
 #else
-#define HALIDE_ALWAYS_INLINE __attribute__((always_inline)) inline
+// Note that (for Posixy compilers) you should always use "inline" along with HALIDE_ALWAYS_INLINE;
+// otherwise some corner-case scenarios may erroneously report link errors.
+#define HALIDE_ALWAYS_INLINE inline __attribute__((always_inline))
 #define HALIDE_NEVER_INLINE __attribute__((noinline))
 #endif
 
@@ -399,11 +401,11 @@ typedef enum halide_type_code_t
     : uint8_t
 #endif
 {
-    halide_type_int = 0,     //!< signed integers
-    halide_type_uint = 1,    //!< unsigned integers
-    halide_type_float = 2,   //!< IEEE floating point numbers
-    halide_type_handle = 3,  //!< opaque pointer type (void *)
-    halide_type_bfloat = 4,  //!< floating point numbers in the bfloat format
+    halide_type_int = 0,     ///< signed integers
+    halide_type_uint = 1,    ///< unsigned integers
+    halide_type_float = 2,   ///< IEEE floating point numbers
+    halide_type_handle = 3,  ///< opaque pointer type (void *)
+    halide_type_bfloat = 4,  ///< floating point numbers in the bfloat format
 } halide_type_code_t;
 
 // Note that while __attribute__ can go before or after the declaration,
@@ -1258,6 +1260,10 @@ typedef enum halide_target_feature_t {
     halide_target_feature_cuda_capability32,  ///< Enable CUDA compute capability 3.2 (Tegra K1)
     halide_target_feature_cuda_capability35,  ///< Enable CUDA compute capability 3.5 (Kepler)
     halide_target_feature_cuda_capability50,  ///< Enable CUDA compute capability 5.0 (Maxwell)
+    halide_target_feature_cuda_capability61,  ///< Enable CUDA compute capability 6.1 (Pascal)
+    halide_target_feature_cuda_capability70,  ///< Enable CUDA compute capability 7.0 (Volta)
+    halide_target_feature_cuda_capability75,  ///< Enable CUDA compute capability 7.5 (Turing)
+    halide_target_feature_cuda_capability80,  ///< Enable CUDA compute capability 8.0 (Ampere)
 
     halide_target_feature_opencl,       ///< Enable the OpenCL runtime.
     halide_target_feature_cl_doubles,   ///< Enable double support on OpenCL targets
@@ -1274,7 +1280,6 @@ typedef enum halide_target_feature_t {
     halide_target_feature_no_runtime,  ///< Do not include a copy of the Halide runtime in any generated object file or assembly
 
     halide_target_feature_metal,  ///< Enable the (Apple) Metal runtime.
-    halide_target_feature_mingw,  ///< For Windows compile to MinGW toolset rather then Visual Studio
 
     halide_target_feature_c_plus_plus_mangling,  ///< Generate C++ mangled names for result function, et al
 
@@ -1295,7 +1300,6 @@ typedef enum halide_target_feature_t {
     halide_target_feature_trace_stores,           ///< Trace all stores done by the pipeline. Equivalent to calling Func::trace_stores on every non-inlined Func.
     halide_target_feature_trace_realizations,     ///< Trace all realizations done by the pipeline. Equivalent to calling Func::trace_realizations on every non-inlined Func.
     halide_target_feature_trace_pipeline,         ///< Trace the pipeline.
-    halide_target_feature_cuda_capability61,      ///< Enable CUDA compute capability 6.1 (Pascal)
     halide_target_feature_hvx_v65,                ///< Enable Hexagon v65 architecture.
     halide_target_feature_hvx_v66,                ///< Enable Hexagon v66 architecture.
     halide_target_feature_cl_half,                ///< Enable half support on OpenCL targets
@@ -1310,11 +1314,13 @@ typedef enum halide_target_feature_t {
     halide_target_feature_disable_llvm_loop_opt,  ///< Disable loop vectorization + unrolling in LLVM. (Ignored for non-LLVM targets.)
     halide_target_feature_wasm_simd128,           ///< Enable +simd128 instructions for WebAssembly codegen.
     halide_target_feature_wasm_signext,           ///< Enable +sign-ext instructions for WebAssembly codegen.
+    halide_target_feature_wasm_sat_float_to_int,  ///< Enable saturating (nontrapping) float-to-int instructions for WebAssembly codegen.
     halide_target_feature_sve,                    ///< Enable ARM Scalable Vector Extensions
     halide_target_feature_sve2,                   ///< Enable ARM Scalable Vector Extensions v2
     halide_target_feature_egl,                    ///< Force use of EGL support.
 
-    halide_target_feature_end  ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
+    halide_target_feature_arm_dot_prod,  ///< Enable ARMv8.2-a dotprod extension (i.e. udot and sdot instructions)
+    halide_target_feature_end            ///< A sentinel. Every target is considered to have this feature, and setting this feature does nothing.
 } halide_target_feature_t;
 
 /** This function is called internally by Halide in some situations to determine
