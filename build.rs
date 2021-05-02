@@ -6,8 +6,8 @@ fn main() {
         .header("HalideRuntime.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .rustified_enum("halide.*_t")
-        .whitelist_type("halide.*_t")
-        .whitelist_function("halide.*")
+        .allowlist_type("halide.*_t")
+        .allowlist_function("halide.*")
         .generate_comments(false)
         .generate()
         .expect("Unable to generate bindings");

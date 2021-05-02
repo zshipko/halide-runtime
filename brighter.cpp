@@ -1,6 +1,21 @@
-#define IMAGED_HALIDE_UTIL
-#include <imaged.h>
 #include <stdio.h>
+
+#include <Halide.h>
+
+using namespace Halide;
+
+template <typename T>
+void interleave_input(T &input, Expr n, Var x, Var y, Var c) {
+  input.dim(0).set_stride(n).dim(2).set_stride(1);
+  input.dim(2).set_bounds(0, n);
+}
+
+template <typename T>
+void interleave_output(T &output, Expr n, Var x, Var y, Var c) {
+  output.dim(0).set_stride(n).dim(2).set_stride(1);
+  output.dim(2).set_bounds(0, n);
+  output.reorder(c, x, y).unroll(c);
+}
 
 class Brighter : public Generator<Brighter> {
 public:
