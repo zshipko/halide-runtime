@@ -29,11 +29,11 @@ impl Type {
     }
 
     pub fn bits(&self) -> u8 {
-        return self.1;
+        self.1
     }
 
     pub fn kind(&self) -> Kind {
-        return self.0;
+        self.0
     }
 
     pub fn size(&self) -> usize {
@@ -59,21 +59,20 @@ fn halide_buffer(
         lanes: t.2,
     };
 
-    let mut dim = Vec::new();
-
-    dim.push(halide_dimension_t {
-        flags: 0,
-        min: 0,
-        extent: width,
-        stride: channels,
-    });
-
-    dim.push(halide_dimension_t {
-        flags: 0,
-        min: 0,
-        extent: height,
-        stride: channels * width,
-    });
+    let mut dim = vec![
+        halide_dimension_t {
+            flags: 0,
+            min: 0,
+            extent: width,
+            stride: channels,
+        },
+        halide_dimension_t {
+            flags: 0,
+            min: 0,
+            extent: height,
+            stride: channels * width,
+        },
+    ];
 
     if channels > 1 {
         dim.push(halide_dimension_t {
@@ -104,7 +103,7 @@ fn halide_buffer(
 
 impl<'a> From<&'a halide_buffer_t> for Buffer<'a> {
     fn from(buf: &'a halide_buffer_t) -> Buffer {
-        let mut dest = buf.clone();
+        let mut dest = *buf;
         let mut dim = Vec::new();
 
         for i in 0..dest.dimensions as usize {
@@ -122,7 +121,7 @@ impl<'a> From<&'a halide_buffer_t> for Buffer<'a> {
 
 impl<'a> Clone for Buffer<'a> {
     fn clone(&self) -> Self {
-        let mut dest = self.0.clone();
+        let mut dest = self.0;
         let mut dim = Vec::new();
 
         for i in 0..dest.dimensions as usize {
@@ -237,13 +236,13 @@ pub mod gpu {
 
 pub type Status = runtime::Status;
 
-extern "C" {
-    pub fn brighter(a: *const Buffer, b: *mut Buffer) -> Status;
-}
-
 #[cfg(test)]
 mod tests {
     use crate::*;
+
+    extern "C" {
+        pub fn brighter(a: *const Buffer, b: *mut Buffer) -> Status;
+    }
 
     #[test]
     fn it_works() {

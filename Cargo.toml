@@ -1,6 +1,6 @@
 [package]
 name = "halide-runtime"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["Zach Shipko <zachshipko@gmail.com>"]
 edition = "2018"
 license = "ISC"
@@ -13,7 +13,7 @@ description = "Bindings to the Halide runtime"
 
 [build-dependencies]
 bindgen = "0.59"
-halide-build = "0.4"
+halide-build = "0.5"
 
 [features]
 default = ["gpu"]

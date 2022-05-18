@@ -9,6 +9,7 @@ fn main() {
         .allowlist_type("halide.*_t")
         .allowlist_function("halide.*")
         .generate_comments(false)
+        .layout_tests(false)
         .generate()
         .expect("Unable to generate bindings");
 
