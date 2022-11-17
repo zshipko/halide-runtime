@@ -12,7 +12,7 @@ description = "Bindings to the Halide runtime"
 [dependencies]
 
 [build-dependencies]
-bindgen = "0.61"
+bindgen = "0.62"
 halide-build = "0.6"
 
 [features]
